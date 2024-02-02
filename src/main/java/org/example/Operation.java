@@ -2,7 +2,9 @@ package org.example;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -36,6 +38,13 @@ public enum Operation {
         x -> x.stream().max(Comparator.naturalOrder()).orElse(BigDecimal.ZERO));
 
 
+  private static final Map<String, Operation> OPERATION_BY_NAME = new HashMap<>();
+  static {
+    for (Operation operation : Operation.values()) {
+      OPERATION_BY_NAME.put(operation.name, operation);
+    }
+  }
+
   private final String name;
   private final Consumer<List<BigDecimal>> validationMethod;
   private final Function<List<BigDecimal>, BigDecimal> calcMethod;
@@ -60,11 +69,6 @@ public enum Operation {
   }
 
   public static Operation findByName(String name) {
-      for (Operation operation : Operation.values()) {
-          if (operation.name.equals(name)) {
-              return operation;
-          }
-      }
-      return null;
+    return OPERATION_BY_NAME.get(name);
   }
 }
